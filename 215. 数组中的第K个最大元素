@@ -1,4 +1,5 @@
 在未排序的数组中找到第 k 个最大的元素。请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
+https://leetcode-cn.com/problems/kth-largest-element-in-an-array/
 
 示例 1:
 
@@ -13,4 +14,42 @@
 你可以假设 k 总是有效的，且 1 ≤ k ≤ 数组的长度。
 
 python
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        if len(nums) == 1: return nums[0]
+        mid = int(len(nums) // 2)
+        left, right, mids = [], [], []
+        for i in range(len(nums)):
+            if nums[i] > nums[mid]:
+                left.append(nums[i])
+            elif nums[i] < nums[mid]:
+                right.append(nums[i])
+            else:
+                mids.append(nums[i])
+        if len(left) >= k:
+            return  self.findKthLargest(left, k)
+        elif len(mids) >= k - len(left):
+            return nums[mid]
+        else:
+            return self.findKthLargest(right, k - len(left) - len(mids))
+            
+
+c++:
+ c++，最小顶堆，一次遍历。时间复杂度：O(nlogk)，空间复杂度：O(k)。
+
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        priority_queue<int, vector<int>, greater<int>> minHeap;
+        for (int num : nums) {
+            if (minHeap.size() < k) {
+                minHeap.push(num);
+            } else if (minHeap.top() < num) {
+                minHeap.pop();
+                minHeap.push(num);
+            }
+        }
+        return minHeap.top();
+    }
+};
 
