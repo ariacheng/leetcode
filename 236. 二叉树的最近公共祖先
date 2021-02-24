@@ -1,0 +1,20 @@
+给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+
+百度百科中最近公共祖先的定义为：“对于有根树 T 的两个节点 p、q，最近公共祖先表示为一个节点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+
+python:
+
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        if root in (None ,p,q):
+            return root 
+        L = self.lowestCommonAncestor(root.left,p,q)
+        R =self.lowestCommonAncestor(root.right,p,q)
+        return R if None==L else L if None==R else root
+        
+        
+左子树或自己含p 就返回p，右子树或自己含q就返回q，左右子树返回一p一q则返回自己，如果某子树返回了答案（另一子树必然返回None），则返回答案，剩下就是两个子树都返回空，则返回空。 经过逻辑化简：
+
+先分析自己，自己是p,q,None中的一者，自然返回自己。
+然后分析左右子树的返回值，如果其中一个是None，则返回另一个，作为传递，无论是传递最终的答案，还是传递p和q。
+如果左右子树返回p和q，当然返回root。 Python中的None即C/C++/Java 中的Null/null
