@@ -29,3 +29,8 @@ class Solution:
             r = (r + x / r) // 2
         return int(r)
      
+举例：
+>>> 9//2
+4
+>>> -9//2
+-5
